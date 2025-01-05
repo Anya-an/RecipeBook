@@ -1,4 +1,8 @@
 plugins {
+    //alias(libs.plugins.android.library)
+    //alias(libs.plugins.jetbrains.kotlin.android)
+    //alias(libs.plugins.dagger.hilt) // Примените Hilt-плагин
+   // kotlin("kapt")
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
@@ -6,14 +10,14 @@ plugins {
 }
 
 android {
-    namespace = "com.example.feature_find"
+    namespace = "com.example.feature_book"
     compileSdk = 34
 
     defaultConfig {
         minSdk = 24
 
-        // testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        //consumerProguardFiles("consumer-rules.pro")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -32,16 +36,6 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-
-    /*compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = "11"
-    }*/
-
     buildFeatures {
         compose = true
     }
@@ -52,10 +46,28 @@ android {
 }
 
 dependencies {
-    // Kotlin
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
 
-    // AndroidX & Jetpack Compose
+   // implementation(libs.androidx.core.ktx)
+    //implementation(libs.androidx.appcompat)
+    //implementation(libs.material)
+    implementation(project(":db_impl"))
+    implementation(project(":db"))
+    //implementation(libs.androidx.material3.android)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    //implementation(libs.androidx.lifecycle.runtime.ktx)
+   // implementation(libs.constraintLayout)
+
+    // Hilt dependencies
+    implementation(libs.hiltAndroid)
+    kapt(libs.hiltCompiler)
+
+    // Room dependencies
+    implementation(libs.roomRuntime)
+    implementation(libs.roomKtx)
+    kapt(libs.roomCompiler)
+
     implementation("androidx.core:core-ktx:1.10.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.compose.ui:ui:1.4.0")
@@ -64,25 +76,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0")
     implementation("androidx.activity:activity-compose:1.7.0")
 
-    // Hilt
-    implementation("com.google.dagger:hilt-android:2.44")
-    // kapt("com.google.dagger:hilt-compiler:2.44")
 
-    // Coil for image loading
-    implementation("io.coil-kt:coil-compose:2.1.0")
-    implementation(project(":feature_book"))
-    implementation(project(":db"))
-
-    // Unit tests
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.0")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.4.0")
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-
-    implementation(libs.hiltAndroid)
-    kapt(libs.hiltCompiler)
-
-    implementation(libs.roomRuntime)
-    implementation(libs.roomKtx)
-    kapt(libs.roomCompiler)
 }

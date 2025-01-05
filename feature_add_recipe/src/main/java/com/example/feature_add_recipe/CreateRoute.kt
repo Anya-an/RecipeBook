@@ -17,18 +17,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.db.dto.Recipe
+import com.example.feature_book.RecipeViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun CreateRoute(
     nameScreen: String,
     // coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    //charactersViewModel: CharactersViewModel = hiltViewModel()
+    viewModel: RecipeViewModel = hiltViewModel()
 ) {
     var title by remember { mutableStateOf(TextFieldValue("")) }
     var ingredients by remember { mutableStateOf(mutableListOf<Pair<String, String>>()) }
     var preparation by remember { mutableStateOf(TextFieldValue("")) }
     var photo by remember { mutableStateOf<Int?>(null) }
-
+    val scope = rememberCoroutineScope()
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -146,7 +150,12 @@ fun CreateRoute(
 
         // Кнопка сохранения
         Button(
-            onClick = { /* TODO: Добавить логику сохранения рецепта */ },
+            onClick = { scope.launch {
+                viewModel.addRecipe(Recipe(//14,
+                    name = title.text,
+                    ingredients = "ingredients",
+                    instructions = preparation.text ))
+            }},
             modifier = Modifier.align(Alignment.End)
         ) {
             Text("Сохранить рецепт")

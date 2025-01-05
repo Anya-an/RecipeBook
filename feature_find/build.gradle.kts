@@ -53,7 +53,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
-    //id("dagger.hilt.android.plugin")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -126,4 +126,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.0")
     debugImplementation("androidx.compose.ui:ui-tooling:1.4.0")
+
+    implementation(libs.hiltAndroid)
+    kapt(libs.hiltCompiler)
 }

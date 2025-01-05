@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.core.navigation.MainScreenContent
 import com.example.feature_add_recipe.CreateRoute
+import com.example.feature_book.BookRoute
 import com.example.feature_find.FindRoute
 
 @Composable
@@ -30,7 +31,7 @@ fun MainContentNavGraph(
         }
 
         composableWithAnimations(MainScreenContent.Book.route) {
-            FindRoute(
+            BookRoute(
                 nameScreen = MainScreenContent.Book.nameScreen
             )
         }

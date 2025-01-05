@@ -11,7 +11,10 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/db" />
+            <option value="$PROJECT_DIR$/db_impl" />
             <option value="$PROJECT_DIR$/feature_add_recipe" />
+            <option value="$PROJECT_DIR$/feature_book" />
             <option value="$PROJECT_DIR$/feature_find" />
           </set>
         </option>
