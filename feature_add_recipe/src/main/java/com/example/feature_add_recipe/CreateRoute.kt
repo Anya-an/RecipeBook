@@ -152,7 +152,8 @@ fun CreateRoute(
                 viewModel.addRecipe(Recipe(//14,
                     name = title.text,
                     ingredients = "ingredients",
-                    instructions = preparation.text ))
+                    instructions = preparation.text,
+                    imageUrl = null))
             }},
             modifier = Modifier.align(Alignment.End)
         ) {

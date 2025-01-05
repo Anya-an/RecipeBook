@@ -1,5 +1,6 @@
 package com.example.feature_book
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,12 +12,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.db.dto.Recipe
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun BookRoute(nameScreen: String,
               coroutineScope: CoroutineScope = rememberCoroutineScope(),
+              navController: NavController,// =  rememberNavController(),
               viewModel: com.example.feature_recipe.RecipeViewModel = hiltViewModel()) {
     val recipes by viewModel.recipesFlow.collectAsState()
 
@@ -32,18 +36,21 @@ fun BookRoute(nameScreen: String,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(recipes) { recipe ->
-                RecipeCard(recipe)
+                RecipeCard(recipe,
+                    onRecipeClick = { recipeId ->
+                        navController.navigate("recipeDetail/$recipeId")})
             }
         }
     }
 }
 
 @Composable
-fun RecipeCard(recipe: Recipe) {
+fun RecipeCard(recipe: Recipe, onRecipeClick: (Long) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 4.dp)
+        .clickable { onRecipeClick(recipe.id) },
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(

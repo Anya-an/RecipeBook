@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.db.dao.RecipeDao
 import com.example.db.dto.Recipe
 
-@Database(entities = [Recipe::class], version = 1)
+@Database(entities = [Recipe::class], version = 2)
 abstract class RecipeDatabase : RoomDatabase() {
 
     abstract fun recipeDao(): RecipeDao
@@ -23,10 +25,21 @@ abstract class RecipeDatabase : RoomDatabase() {
                     context.applicationContext,
                     RecipeDatabase::class.java,
                     "recipe_database"
-                ).build()
+                )
+                    .addMigrations(MIGRATION_1_2)
+                    .build()
                 INSTANCE = instance
                 instance
             }
         }
+
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Добавляем новый столбец imageUrl
+                database.execSQL("ALTER TABLE recipe ADD COLUMN imageUrl TEXT")
+            }
+        }
     }
+
+
 }

@@ -3,11 +3,15 @@ package com.example.recipeBook
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.core.navigation.MainScreenContent
 import com.example.feature_add_recipe.CreateRoute
 import com.example.feature_book.BookRoute
 import com.example.feature_find.FindRoute
+import com.example.feature_recipe.RecipeDetailsScreen
 
 @Composable
 fun MainContentNavGraph(
@@ -32,8 +36,17 @@ fun MainContentNavGraph(
 
         composableWithAnimations(MainScreenContent.Book.route) {
             BookRoute(
-                nameScreen = MainScreenContent.Book.nameScreen
+                nameScreen = MainScreenContent.Book.nameScreen,
+                navController = navController
             )
+        }
+
+        composable(
+            route = "recipeDetail/{recipeId}",
+            arguments = listOf(navArgument("recipeId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val recipeId = backStackEntry.arguments?.getLong("recipeId") ?: -1
+            RecipeDetailsScreen(recipeId = recipeId)
         }
     }
 }
