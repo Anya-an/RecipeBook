@@ -2,7 +2,7 @@ plugins {
     //alias(libs.plugins.android.library)
     //alias(libs.plugins.jetbrains.kotlin.android)
     //alias(libs.plugins.dagger.hilt) // Примените Hilt-плагин
-   // kotlin("kapt")
+    // kotlin("kapt")
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.feature_book"
+    namespace = "com.example.feature_recipe"
     compileSdk = 34
 
     defaultConfig {
@@ -47,18 +47,17 @@ android {
 
 dependencies {
 
-   // implementation(libs.androidx.core.ktx)
+    // implementation(libs.androidx.core.ktx)
     //implementation(libs.androidx.appcompat)
     //implementation(libs.material)
     implementation(project(":db_impl"))
     implementation(project(":db"))
-    implementation(project(":feature_recipe"))
     //implementation(libs.androidx.material3.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     //implementation(libs.androidx.lifecycle.runtime.ktx)
-   // implementation(libs.constraintLayout)
+    // implementation(libs.constraintLayout)
 
     // Hilt dependencies
     implementation(libs.hiltAndroid)

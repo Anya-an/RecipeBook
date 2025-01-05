@@ -3,7 +3,6 @@ package com.example.feature_add_recipe
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,18 +14,17 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.db.dto.Recipe
-import com.example.feature_book.RecipeViewModel
+import com.example.feature_recipe.RecipeViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun CreateRoute(
     nameScreen: String,
     // coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    viewModel: RecipeViewModel = hiltViewModel()
+    viewModel: com.example.feature_recipe.RecipeViewModel = hiltViewModel()
 ) {
     var title by remember { mutableStateOf(TextFieldValue("")) }
     var ingredients by remember { mutableStateOf(mutableListOf<Pair<String, String>>()) }

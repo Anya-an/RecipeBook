@@ -1,6 +1,5 @@
 package com.example.feature_book
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,20 +7,17 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.db.dto.Recipe
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @Composable
 fun BookRoute(nameScreen: String,
               coroutineScope: CoroutineScope = rememberCoroutineScope(),
-              viewModel: RecipeViewModel = hiltViewModel()) {
+              viewModel: com.example.feature_recipe.RecipeViewModel = hiltViewModel()) {
     val recipes by viewModel.recipesFlow.collectAsState()
 
     //val recipesList = coroutineScope.launch {viewModel.loadRecipes()}

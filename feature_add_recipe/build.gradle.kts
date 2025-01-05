@@ -70,7 +70,7 @@ dependencies {
 
     // Coil for image loading
     implementation("io.coil-kt:coil-compose:2.1.0")
-    implementation(project(":feature_book"))
+    implementation(project(":feature_recipe"))
     implementation(project(":db"))
 
     // Unit tests

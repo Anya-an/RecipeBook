@@ -127,6 +127,8 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.0")
     debugImplementation("androidx.compose.ui:ui-tooling:1.4.0")
 
+    implementation(project(":feature_recipe"))
+
     implementation(libs.hiltAndroid)
     kapt(libs.hiltCompiler)
 }
