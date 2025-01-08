@@ -121,6 +121,7 @@ dependencies {
 
     // Coil for image loading
     implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation(project(":db"))
 
     // Unit tests
     testImplementation("junit:junit:4.13.2")
@@ -131,4 +132,7 @@ dependencies {
 
     implementation(libs.hiltAndroid)
     kapt(libs.hiltCompiler)
+
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 }

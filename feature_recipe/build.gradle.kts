@@ -52,6 +52,7 @@ dependencies {
     //implementation(libs.material)
     implementation(project(":db_impl"))
     implementation(project(":db"))
+    implementation(project(":network"))
     //implementation(libs.androidx.material3.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

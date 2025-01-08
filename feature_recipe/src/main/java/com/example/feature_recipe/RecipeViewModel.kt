@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.db.dto.Recipe
 import com.example.db_impl.RecipeRepository
+import com.example.network.RecipeApiService
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,20 +19,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecipeViewModel @Inject constructor(
-    private val repository: RecipeRepository
+    private val repository: RecipeRepository,
+    private val apiService: RecipeApiService
 ) : ViewModel() {
 
-   // private val _recipesFlow = MutableStateFlow<List<Recipe>>(emptyList())
-   // val recipesFlow: StateFlow<List<Recipe>> get() = _recipesFlow
-
-    //fun loadRecipes() {
-      //  viewModelScope.launch {
-        //    withContext(Dispatchers.IO) {
-         //       _recipesFlow.value = repository.getAllRecipes()
-          //  }
-       // }
-  //  }
-    //val recipesFlow: Flow<List<Recipe>> = repository.getAllRecipesFlow()
 
     val recipesFlow: StateFlow<List<Recipe>> = repository.recipesFlow.stateIn(
         scope = viewModelScope,
@@ -59,5 +50,30 @@ class RecipeViewModel @Inject constructor(
             }
         }
     }
+
+    // Сетевые данные (например, для поиска)
+    private val _networkRecipesFlow = MutableStateFlow<List<Recipe>>(emptyList())
+    val networkRecipesFlow: StateFlow<List<Recipe>> get() = _networkRecipesFlow
+
+    // Загрузка из сети
+    fun fetchRecipesFromNetwork(query: String) {
+        viewModelScope.launch {
+            try {
+                val response = apiService.getRecipes(query)
+                _networkRecipesFlow.value = response.results.map { recipeDto ->
+                    Recipe(
+                        id = recipeDto.id.toLong(),
+                        name = recipeDto.title,
+                        ingredients = "",
+                        instructions = "",
+                        imageUrl = recipeDto.image
+                    )
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
 }
 

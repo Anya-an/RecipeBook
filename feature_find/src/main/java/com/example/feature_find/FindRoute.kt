@@ -13,17 +13,25 @@ import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.feature_recipe.RecipeViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.feature_recipe.RecipeCard
+import com.example.db.dto.Recipe
 
 
 @Composable
 fun FindRoute(
     nameScreen: String,
+    viewModel: RecipeViewModel = hiltViewModel()
     // coroutineScope: CoroutineScope = rememberCoroutineScope(),
     //charactersViewModel: CharactersViewModel = hiltViewModel()
 ) {
+    //var searchQuery by remember { mutableStateOf("") }
+    //var searchResults by remember { mutableStateOf<List<String>>(emptyList()) }
     var searchQuery by remember { mutableStateOf("") }
-    var searchResults by remember { mutableStateOf<List<String>>(emptyList()) }
 
+    // Подписка на результаты поиска из ViewModel
+    val searchResults by viewModel.networkRecipesFlow.collectAsState()
 
     Box(
         modifier = Modifier
@@ -59,7 +67,8 @@ fun FindRoute(
         Button(
             onClick = {
                 // Логика поиска
-                searchResults = performRecipeSearch(searchQuery)
+                //searchResults = performRecipeSearch(searchQuery)
+                viewModel.fetchRecipesFromNetwork(searchQuery)
             },
             modifier = Modifier.align(Alignment.End)
         ) {
@@ -69,8 +78,10 @@ fun FindRoute(
         // Таблица с результатами поиска
         if (searchResults.isNotEmpty()) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(searchResults) { result ->
-                    RecipeItem(recipeName = result)
+
+                items(searchResults) { recipe ->
+                    RecipeCard(recipe,
+                        onRecipeClick = { id -> /* Обработка клика */ })
                 }
             }
         } else {
