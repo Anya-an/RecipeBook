@@ -75,12 +75,13 @@ fun RecipeDetailsScreen(
             }
 
             // Список ингредиентов
+            it.ingredients?.let{
             Text(
                 text = "Ингредиенты:",
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
-            it.ingredients.split("\n").forEach { ingredient ->
+                it.split("\n").forEach { ingredient ->
                 Text(
                     text = "• $ingredient",
                     style = MaterialTheme.typography.bodyLarge,
@@ -88,6 +89,7 @@ fun RecipeDetailsScreen(
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
+                }
 
             // Описание приготовления
             Text(

@@ -76,7 +76,7 @@ class RecipeViewModel @Inject constructor(
                         val recipe = Recipe(
                             id = recipeId,
                             name = response.title,
-                            ingredients = response.ingredients?.joinToString(", ") { it.name } ?: "Ингредиенты не указаны",
+                            ingredients = response.ingredients?.joinToString(", ") { it.name } ?: null,
                             instructions = response.instructions ?: "Нет инструкций",
                             imageUrl = response.image
                         )

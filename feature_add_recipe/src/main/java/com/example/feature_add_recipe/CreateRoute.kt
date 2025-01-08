@@ -1,11 +1,14 @@
 package com.example.feature_add_recipe
 
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -39,6 +42,8 @@ fun CreateRoute(
     var photo by remember { mutableStateOf<Int?>(null) }
     val scope = rememberCoroutineScope()
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    var newIngredientName by remember { mutableStateOf(TextFieldValue("")) }
+    var newIngredientQuantity by remember { mutableStateOf(TextFieldValue("")) }
 
     val context = LocalContext.current
 
@@ -68,8 +73,9 @@ fun CreateRoute(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 16.dp, end = 16.dp) // Паддинг для отступов слева и справа
-            .padding(top = 80.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(top = 80.dp)
+        .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
 
 
@@ -99,29 +105,53 @@ fun CreateRoute(
                 ) {
                     OutlinedTextField(
                         value = name,
-                        onValueChange = { newName ->
-                            ingredients[index] = newName to quantity
-                        },
+                        onValueChange = { newName -> ingredients[index] = newName to quantity },
                         label = { Text("Ингредиент") },
                         modifier = Modifier.weight(1f)
                     )
                     OutlinedTextField(
                         value = quantity,
-                        onValueChange = { newQuantity ->
-                            ingredients[index] = name to newQuantity
-                        },
+                        onValueChange = { newQuantity -> ingredients[index] = name to newQuantity },
                         label = { Text("Количество") },
                         modifier = Modifier.weight(1f)
                     )
                 }
             }
+
+            // Поля для добавления нового ингредиента
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    value = newIngredientName,
+                    onValueChange = { newIngredientName = it },
+                    label = { Text("Ингредиент") },
+                    modifier = Modifier.weight(1f)
+                )
+                OutlinedTextField(
+                    value = newIngredientQuantity,
+                    onValueChange = { newIngredientQuantity = it },
+                    label = { Text("Количество") },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
             Button(
-                onClick = { ingredients.add("" to "") },
+                onClick = {
+                    if (newIngredientName.text.isNotBlank() && newIngredientQuantity.text.isNotBlank()) {
+                        ingredients.add(newIngredientName.text to newIngredientQuantity.text)
+                        newIngredientName = TextFieldValue("") // Очистка поля после добавления
+                        newIngredientQuantity = TextFieldValue("") // Очистка поля после добавления
+                    }
+                },
                 modifier = Modifier.align(Alignment.End)
             ) {
                 Text("Добавить ингредиент")
             }
         }
+        //}
 
         // Способ приготовления
         OutlinedTextField(
@@ -139,14 +169,14 @@ fun CreateRoute(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text("Фото рецепта", fontSize = 18.sp, color = Color.Black)
-            Box(
+            selectedImageUri?.let{ uri -> Box(
                 modifier = Modifier
                     .size(150.dp)
                     .padding(8.dp),
                 contentAlignment = Alignment.Center
             ) {
                 //if (photo != null) {
-                selectedImageUri?.let { uri ->
+               // selectedImageUri?.let { uri ->
                     Image(
                         //painter = painterResource(id = photo!!),
                         painter = rememberAsyncImagePainter(uri),
@@ -154,14 +184,14 @@ fun CreateRoute(
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
                     )
-                } //else {
+                //} //else {
                     ?:
                     Text(
                         text = "Нет изображения",
                         textAlign = TextAlign.Center,
                         color = Color.Gray
                     )
-                //}
+                }
             }
             Button(onClick = { launcher.launch("image/*") },) {
                 Text("Добавить фото")
@@ -170,16 +200,33 @@ fun CreateRoute(
 
         // Кнопка сохранения
         Button(
-            onClick = { scope.launch {
-                val savedImagePath = selectedImageUri?.let { uri ->
-                    copyImageToInternalStorage(context, uri)
+            onClick = {
+                scope.launch {
+                    try {
+                        val savedImagePath = selectedImageUri?.let { uri ->
+                            copyImageToInternalStorage(context, uri)
+                        }
+                        viewModel.addRecipe(
+                            Recipe(
+                                name = title.text,
+                                ingredients = ingredients.joinToString("\n") { "${it.first}: ${it.second}" },
+                                instructions = preparation.text,
+                                imageUrl = savedImagePath
+                            )
+                        )
+                        Toast.makeText(context, "Рецепт добавлен!", Toast.LENGTH_SHORT).show()
+                        // Очистка полей
+                        title = TextFieldValue("")
+                        ingredients.clear()
+                        preparation = TextFieldValue("")
+                        selectedImageUri = null
+                        newIngredientName = TextFieldValue("")
+                        newIngredientQuantity = TextFieldValue("")
+                    } catch (e: Exception) {
+                        Toast.makeText(context, "Ошибка сохранения: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                    }
                 }
-                viewModel.addRecipe(Recipe(//14,
-                    name = title.text,
-                    ingredients = "ingredients",
-                    instructions = preparation.text,
-                    imageUrl = savedImagePath ))
-            }},
+            },
             modifier = Modifier.align(Alignment.End)
         ) {
             Text("Сохранить рецепт")

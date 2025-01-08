@@ -9,7 +9,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.db.dao.RecipeDao
 import com.example.db.dto.Recipe
 
-@Database(entities = [Recipe::class], version = 2)
+@Database(entities = [Recipe::class], version = 3)
 abstract class RecipeDatabase : RoomDatabase() {
 
     abstract fun recipeDao(): RecipeDao
@@ -27,6 +27,7 @@ abstract class RecipeDatabase : RoomDatabase() {
                     "recipe_database"
                 )
                     .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_2_3)
                     .build()
                 INSTANCE = instance
                 instance
@@ -37,6 +38,13 @@ abstract class RecipeDatabase : RoomDatabase() {
             override fun migrate(database: SupportSQLiteDatabase) {
                 // Добавляем новый столбец imageUrl
                 database.execSQL("ALTER TABLE recipe ADD COLUMN imageUrl TEXT")
+            }
+        }
+
+        val MIGRATION_2_3 = object : Migration(2,3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // В данном случае ничего менять не нужно, так как SQLite хранит `String` и `String?` как `TEXT`.
+                // Можно добавить проверку или логирование для подтверждения.
             }
         }
     }

@@ -69,15 +69,19 @@ fun RecipeCard(recipe: Recipe, onRecipeClick: (Long) -> Unit) {
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Ingredients: ${recipe.ingredients}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Instructions: ${recipe.instructions}",
-                    style = MaterialTheme.typography.bodySmall
-                )
+                recipe.ingredients?.let {
+                    if (recipe.ingredients != "") {
+                        Text(
+                            text = "Ingredients: ${recipe.ingredients}",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+                //Text(
+                   // text = "Instructions: ${recipe.instructions}",
+                   // style = MaterialTheme.typography.bodySmall
+                //)
             }
         }
     }

@@ -4,11 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
@@ -35,6 +38,8 @@ fun FindRoute(
     // Подписка на результаты поиска из ViewModel
     val searchResults by viewModel.networkRecipesFlow.collectAsState()
 
+
+    val focusManager = LocalFocusManager.current
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -54,7 +59,7 @@ fun FindRoute(
             .fillMaxSize()
             .padding(start = 16.dp, end = 16.dp) // Паддинг для отступов слева и справа
             .padding(top = 80.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         // Поле ввода для поиска
         OutlinedTextField(
@@ -62,21 +67,22 @@ fun FindRoute(
             onValueChange = { searchQuery = it },
             label = { Text("Поиск рецептов") },
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            singleLine = true,
+            trailingIcon = {
+                IconButton(
+                    onClick = {
+                        focusManager.clearFocus()
+                        // Логика поиска
+                        viewModel.fetchRecipesFromNetwork(searchQuery)
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "Искать"
+                    )
+                }
+            }
         )
-
-        // Кнопка для поиска
-        Button(
-            onClick = {
-                // Логика поиска
-                //searchResults = performRecipeSearch(searchQuery)
-                viewModel.fetchRecipesFromNetwork(searchQuery)
-            },
-            modifier = Modifier.align(Alignment.End)
-        ) {
-            Text("Поиск")
-        }
-
         // Таблица с результатами поиска
         if (searchResults.isNotEmpty()) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
