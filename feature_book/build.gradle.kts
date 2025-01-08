@@ -76,6 +76,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:1.4.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0")
     implementation("androidx.activity:activity-compose:1.7.0")
+    implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation ("androidx.compose.foundation:foundation:1.5.1")
 
 
     implementation(libs.androidx.lifecycle.viewmodel.compose)

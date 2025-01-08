@@ -1,5 +1,8 @@
 package com.example.feature_add_recipe
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,11 +17,15 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import com.example.db.dto.Recipe
 import com.example.feature_recipe.RecipeViewModel
 import kotlinx.coroutines.launch
+import com.example.core.ImageHelper
+import com.example.core.ImageHelper.Companion.copyImageToInternalStorage
 
 @Composable
 fun CreateRoute(
@@ -31,6 +38,18 @@ fun CreateRoute(
     var preparation by remember { mutableStateOf(TextFieldValue("")) }
     var photo by remember { mutableStateOf<Int?>(null) }
     val scope = rememberCoroutineScope()
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+
+    val context = LocalContext.current
+
+    // Лаунчер для выбора изображения
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            selectedImageUri = uri // Сохраняем URI выбранного изображения
+        }
+    )
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -126,22 +145,25 @@ fun CreateRoute(
                     .padding(8.dp),
                 contentAlignment = Alignment.Center
             ) {
-                if (photo != null) {
+                //if (photo != null) {
+                selectedImageUri?.let { uri ->
                     Image(
-                        painter = painterResource(id = photo!!),
+                        //painter = painterResource(id = photo!!),
+                        painter = rememberAsyncImagePainter(uri),
                         contentDescription = "Фото рецепта",
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
                     )
-                } else {
+                } //else {
+                    ?:
                     Text(
                         text = "Нет изображения",
                         textAlign = TextAlign.Center,
                         color = Color.Gray
                     )
-                }
+                //}
             }
-            Button(onClick = { /* TODO: Добавить логику выбора фото */ }) {
+            Button(onClick = { launcher.launch("image/*") },) {
                 Text("Добавить фото")
             }
         }
@@ -149,11 +171,14 @@ fun CreateRoute(
         // Кнопка сохранения
         Button(
             onClick = { scope.launch {
+                val savedImagePath = selectedImageUri?.let { uri ->
+                    copyImageToInternalStorage(context, uri)
+                }
                 viewModel.addRecipe(Recipe(//14,
                     name = title.text,
                     ingredients = "ingredients",
                     instructions = preparation.text,
-                    imageUrl = null))
+                    imageUrl = savedImagePath ))
             }},
             modifier = Modifier.align(Alignment.End)
         ) {

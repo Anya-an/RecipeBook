@@ -1,5 +1,6 @@
 package com.example.feature_recipe
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -56,11 +57,11 @@ fun RecipeDetailsScreen(
             // Изображение, если есть
             it.imageUrl?.let { imageUrl ->
                 AsyncImage(
-                    model = imageUrl,
+                    model = Uri.parse(imageUrl),
                     contentDescription = "Изображение рецепта",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(200.dp)
+                        .height(300.dp)
                         .clip(RoundedCornerShape(8.dp)),
                     contentScale = ContentScale.Crop
                 )

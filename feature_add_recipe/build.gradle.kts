@@ -72,6 +72,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.1.0")
     implementation(project(":feature_recipe"))
     implementation(project(":db"))
+    implementation(project(":core"))
 
     // Unit tests
     testImplementation("junit:junit:4.13.2")
