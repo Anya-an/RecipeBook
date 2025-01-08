@@ -30,7 +30,8 @@ fun MainContentNavGraph(
 
         composableWithAnimations(MainScreenContent.Find.route) {
             FindRoute(
-                nameScreen = MainScreenContent.Find.nameScreen
+                nameScreen = MainScreenContent.Find.nameScreen,
+                navController = navController
             )
         }
 

@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feature_recipe.RecipeViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.feature_recipe.RecipeCard
 import com.example.db.dto.Recipe
 
@@ -22,7 +23,8 @@ import com.example.db.dto.Recipe
 @Composable
 fun FindRoute(
     nameScreen: String,
-    viewModel: RecipeViewModel = hiltViewModel()
+    viewModel: RecipeViewModel = hiltViewModel(),
+    navController: NavController,
     // coroutineScope: CoroutineScope = rememberCoroutineScope(),
     //charactersViewModel: CharactersViewModel = hiltViewModel()
 ) {
@@ -81,7 +83,8 @@ fun FindRoute(
 
                 items(searchResults) { recipe ->
                     RecipeCard(recipe,
-                        onRecipeClick = { id -> /* Обработка клика */ })
+                        onRecipeClick = {  recipeId ->
+                            navController.navigate("recipeDetail/$recipeId")})
                 }
             }
         } else {

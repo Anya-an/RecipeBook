@@ -38,8 +38,14 @@ fun RecipeDetailsScreen(
         viewModel.loadRecipeById(recipeId)
     }
 
-    // Подписываемся на StateFlow
+    // Подписываемся на состояние данных
     val recipe by viewModel.recipe.collectAsState()
+    //val recipeRemote by viewModel.recipeInfo.collectAsState()
+
+    // Проверяем, есть ли локальный рецепт, если нет — используем удаленные данные
+    //val recipe = recipeLocal ?: recipeRemote
+
+
     recipe?.let {
         Column(
             modifier = Modifier

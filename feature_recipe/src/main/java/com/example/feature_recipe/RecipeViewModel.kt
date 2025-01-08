@@ -1,10 +1,13 @@
 package com.example.feature_recipe
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.db.dto.Recipe
 import com.example.db_impl.RecipeRepository
 import com.example.network.RecipeApiService
+import com.example.network.RecipeInformationResponse
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +43,7 @@ class RecipeViewModel @Inject constructor(
         }
     }
 
-    private val _recipe = MutableStateFlow<Recipe?>(null)
+  /*  private val _recipe = MutableStateFlow<Recipe?>(null)
     val recipe: StateFlow<Recipe?> get() = _recipe
 
     fun loadRecipeById(recipeId: Long) {
@@ -49,11 +52,50 @@ class RecipeViewModel @Inject constructor(
                 _recipe.value = repository.getRecipeById(recipeId)
             }
         }
+    }*/
+
+    private val _recipe = MutableStateFlow<Recipe?>(null)
+    val recipe: StateFlow<Recipe?> = _recipe
+
+        // private val _recipeInfo = MutableStateFlow<Recipe?>(null)
+    //val recipeInfo: StateFlow<Recipe?> = _recipeInfo
+
+    fun loadRecipeById(recipeId: Long) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                // Сначала ищем в локальной базе данных
+                val localRecipe = repository.getRecipeById(recipeId)
+
+                if (localRecipe != null) {
+                    _recipe.value = localRecipe
+                } else {
+                    // Если нет, ищем через Retrofit
+                    //_recipeInfo.value = repository.fetchRecipeByIdFromApi(recipeId)
+                    try {
+                        val response = apiService.getRecipeInformation(recipeId)
+                        val recipe = Recipe(
+                            id = recipeId,
+                            name = response.title,
+                            ingredients = response.ingredients?.joinToString(", ") { it.name } ?: "Ингредиенты не указаны",
+                            instructions = response.instructions ?: "Нет инструкций",
+                            imageUrl = response.image
+                        )
+
+                        _recipe.value = recipe
+                    } catch (e: Exception) {
+                        Log.e("RecipeViewModel", "Error loading recipe: ${e.localizedMessage}")
+                    }
+                }
+            }
+        }
     }
 
     // Сетевые данные (например, для поиска)
     private val _networkRecipesFlow = MutableStateFlow<List<Recipe>>(emptyList())
     val networkRecipesFlow: StateFlow<List<Recipe>> get() = _networkRecipesFlow
+
+   // private val _recipeInfo = MutableStateFlow<Recipe?>(null)
+    //val recipeInfo: StateFlow<Recipe?> get() = _recipeInfo
 
     // Загрузка из сети
     fun fetchRecipesFromNetwork(query: String) {
@@ -74,6 +116,25 @@ class RecipeViewModel @Inject constructor(
             }
         }
     }
+
+   /* fun getRecipeInformation(id: Int) {
+        viewModelScope.launch {
+            try {
+                val response = apiService.getRecipeInformation(id)
+                val recipe = Recipe(
+                    id = id.toLong(),
+                    name = response.title,
+                    ingredients = response.ingredients.joinToString(", ") { it.name },
+                    instructions = response.instructions ?: "Нет инструкций",
+                    imageUrl = response.image
+                )
+
+                _recipeInfo.value = recipe
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }*/
 
 }
 
