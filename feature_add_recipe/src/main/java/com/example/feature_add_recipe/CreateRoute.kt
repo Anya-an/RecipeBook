@@ -29,18 +29,19 @@ import com.example.feature_recipe.RecipeViewModel
 import kotlinx.coroutines.launch
 import com.example.core.ImageHelper
 import com.example.core.ImageHelper.Companion.copyImageToInternalStorage
+import com.example.ui_kit.R
+import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun CreateRoute(
     nameScreen: String,
-    // coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    viewModel: com.example.feature_recipe.RecipeViewModel = hiltViewModel()
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    viewModel: RecipeViewModel = hiltViewModel()
 ) {
     var title by remember { mutableStateOf(TextFieldValue("")) }
     var ingredients by remember { mutableStateOf(mutableListOf<Pair<String, String>>()) }
     var preparation by remember { mutableStateOf(TextFieldValue("")) }
-    var photo by remember { mutableStateOf<Int?>(null) }
-    val scope = rememberCoroutineScope()
+        //val scope = rememberCoroutineScope()
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     var newIngredientName by remember { mutableStateOf(TextFieldValue("")) }
     var newIngredientQuantity by remember { mutableStateOf(TextFieldValue("")) }
@@ -83,7 +84,7 @@ fun CreateRoute(
         OutlinedTextField(
             value = title,
             onValueChange = { title = it },
-            label = { Text("Название") },
+            label = { Text(context.getString(R.string.create_recipe_title)) },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -92,7 +93,7 @@ fun CreateRoute(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Ингредиенты",
+                text = context.getString(R.string.create_ingredients),
                 fontSize = 18.sp,
                 color = Color.Black,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -106,13 +107,13 @@ fun CreateRoute(
                     OutlinedTextField(
                         value = name,
                         onValueChange = { newName -> ingredients[index] = newName to quantity },
-                        label = { Text("Ингредиент") },
+                        label = { Text(context.getString(R.string.create_ingredient)) },
                         modifier = Modifier.weight(1f)
                     )
                     OutlinedTextField(
                         value = quantity,
                         onValueChange = { newQuantity -> ingredients[index] = name to newQuantity },
-                        label = { Text("Количество") },
+                        label = { Text(context.getString(R.string.create_count)) },
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -127,13 +128,13 @@ fun CreateRoute(
                 OutlinedTextField(
                     value = newIngredientName,
                     onValueChange = { newIngredientName = it },
-                    label = { Text("Ингредиент") },
+                    label = { Text(context.getString(R.string.create_ingredient)) },
                     modifier = Modifier.weight(1f)
                 )
                 OutlinedTextField(
                     value = newIngredientQuantity,
                     onValueChange = { newIngredientQuantity = it },
-                    label = { Text("Количество") },
+                    label = { Text(context.getString(R.string.create_count)) },
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -148,7 +149,7 @@ fun CreateRoute(
                 },
                 modifier = Modifier.align(Alignment.End)
             ) {
-                Text("Добавить ингредиент")
+                Text(context.getString(R.string.create_add_ingredients))
             }
         }
         //}
@@ -157,7 +158,7 @@ fun CreateRoute(
         OutlinedTextField(
             value = preparation,
             onValueChange = { preparation = it },
-            label = { Text("Способ приготовления") },
+            label = { Text(context.getString(R.string.create_preparation)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = false,
             maxLines = 5
@@ -168,7 +169,7 @@ fun CreateRoute(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Фото рецепта", fontSize = 18.sp, color = Color.Black)
+            Text(context.getString(R.string.crate_photo), fontSize = 18.sp, color = Color.Black)
             selectedImageUri?.let{ uri -> Box(
                 modifier = Modifier
                     .size(150.dp)
@@ -180,7 +181,7 @@ fun CreateRoute(
                     Image(
                         //painter = painterResource(id = photo!!),
                         painter = rememberAsyncImagePainter(uri),
-                        contentDescription = "Фото рецепта",
+                        contentDescription = context.getString(R.string.crate_photo),
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
                     )
@@ -194,14 +195,14 @@ fun CreateRoute(
                 }
             }
             Button(onClick = { launcher.launch("image/*") },) {
-                Text("Добавить фото")
+                Text(context.getString(R.string.create_add_photo))
             }
         }
 
         // Кнопка сохранения
         Button(
             onClick = {
-                scope.launch {
+                coroutineScope.launch {
                     try {
                         val savedImagePath = selectedImageUri?.let { uri ->
                             copyImageToInternalStorage(context, uri)
@@ -214,7 +215,7 @@ fun CreateRoute(
                                 imageUrl = savedImagePath
                             )
                         )
-                        Toast.makeText(context, "Рецепт добавлен!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.create_success_toast), Toast.LENGTH_SHORT).show()
                         // Очистка полей
                         title = TextFieldValue("")
                         ingredients.clear()
@@ -223,13 +224,13 @@ fun CreateRoute(
                         newIngredientName = TextFieldValue("")
                         newIngredientQuantity = TextFieldValue("")
                     } catch (e: Exception) {
-                        Toast.makeText(context, "Ошибка сохранения: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "${context.getString(R.string.create_success_toast)} ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
                     }
                 }
             },
             modifier = Modifier.align(Alignment.End)
         ) {
-            Text("Сохранить рецепт")
+            Text(context.getString(R.string.create_add_recipe))
         }
     }
 }

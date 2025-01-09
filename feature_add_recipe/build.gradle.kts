@@ -73,6 +73,7 @@ dependencies {
     implementation(project(":feature_recipe"))
     implementation(project(":db"))
     implementation(project(":core"))
+    implementation(project(":ui_kit"))
 
     // Unit tests
     testImplementation("junit:junit:4.13.2")

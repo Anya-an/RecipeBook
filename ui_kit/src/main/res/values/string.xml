@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Книга рецептов</string>
+    <string name="create_route">Создать рецепт</string>
+    <string name="find_route">Поиск рецептов</string>
+    <string name="book_route">Книга рецептов</string>
+
+    <string name="create_recipe_title">Название</string>
+    <string name="create_ingredients">Ингредиенты</string>
+    <string name="create_ingredient">Ингредиент</string>
+    <string name="create_count">Количество</string>
+    <string name="create_add_ingredients">Добавить ингредиент</string>
+    <string name="create_preparation">Способ приготовления</string>
+    <string name="crate_photo">Фото рецепта</string>
+    <string name="create_add_photo">Добавить фото</string>
+    <string name="create_success_toast">Рецепт добавлен!</string>
+    <string name="create_fail_toast">Ошибка сохранения: </string>
+    <string name="create_add_recipe">Сохранить рецепт</string>
+
+    Text(context.getString(R.string.create_recipe_title)
+</resources>
