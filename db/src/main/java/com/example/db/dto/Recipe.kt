@@ -9,5 +9,6 @@ data class Recipe(
     val name: String,
     val ingredients: String?,
     val instructions: String,
-    val imageUrl: String?
+    val imageUrl: String?,
+    val isSaves: Boolean = false
 )

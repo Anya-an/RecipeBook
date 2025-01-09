@@ -122,15 +122,4 @@ fun RecipeItem(recipeName: String) {
     }
 }
 
-// Функция для имитации поиска рецептов (например, получение из API или локальной базы данных)
-fun performRecipeSearch(query: String): List<String> {
-    // Здесь логика для поиска. Например, фильтрация по запросу или получение из API.
-    val allRecipes = listOf("Cake","Борщ", "Суп из тыквы", "Пицца", "Торт Наполеон", "Паста карбонара")
-    return if (query.isBlank()) {
-        emptyList()
-    } else {
-        allRecipes.filter { it.contains(query, ignoreCase = true) }
-    }
-}
-
 

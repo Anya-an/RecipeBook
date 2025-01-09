@@ -212,7 +212,8 @@ fun CreateRoute(
                                 name = title.text,
                                 ingredients = ingredients.joinToString("\n") { "${it.first}: ${it.second}" },
                                 instructions = preparation.text,
-                                imageUrl = savedImagePath
+                                imageUrl = savedImagePath,
+                                isSaves = true
                             )
                         )
                         Toast.makeText(context, context.getString(R.string.create_success_toast), Toast.LENGTH_SHORT).show()

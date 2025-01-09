@@ -12,8 +12,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.db.dto.Recipe
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeDetailsScreen(
     //recipe: Recipe, // Ваш объект с данными рецепта
@@ -53,70 +62,93 @@ fun RecipeDetailsScreen(
 
 
     recipe?.let {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.primary)
-                .padding(16.dp)
-        ) {
-            Text(
-                text = it.name,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                modifier = Modifier.align(Alignment.CenterStart)
-            )
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .padding(top = 80.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
+        // Добавляем TopAppBar с кнопкой в правом верхнем углу
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = it.name,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    },
+                    actions = {
+                        if (!it.isSaves) {
 
-
-            // Изображение, если есть
-            it.imageUrl?.let { imageUrl ->
-                AsyncImage(
-                    model = Uri.parse(imageUrl),
-                    contentDescription = "Изображение рецепта",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(300.dp)
-                        .clip(RoundedCornerShape(8.dp)),
-                    contentScale = ContentScale.Crop
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-
-            // Список ингредиентов
-            it.ingredients?.let{
-            Text(
-                text = "Ингредиенты:",
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-                it.split("\n").forEach { ingredient ->
-                Text(
-                    text = "• $ingredient",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(bottom = 4.dp)
+                            IconButton(onClick = { viewModel.addRecipe(Recipe(
+                                name = it.name,
+                                ingredients = it.ingredients,
+                                instructions = it.instructions,
+                                imageUrl = it.imageUrl,
+                                isSaves = true
+                            )) }) {
+                                Icon(
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = "Сохранить рецепт"
+                                )
+                            }
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary // Используем контейнерный цвет
+                    )
+                    //containerColor = MaterialTheme.colorScheme.primary
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
+        ) { paddingValues ->
+
+            // Основное содержимое экрана
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .verticalScroll(rememberScrollState())
+                    .padding(top = 16.dp)
+            ) {
+                // Изображение рецепта, если оно есть
+                it.imageUrl?.let { imageUrl ->
+                    AsyncImage(
+                        model = Uri.parse(imageUrl),
+                        contentDescription = "Изображение рецепта",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(300.dp)
+                            .clip(RoundedCornerShape(8.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
 
-            // Описание приготовления
-            Text(
-                text = "Приготовление:",
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            Text(
-                text = it.instructions,
-                style = MaterialTheme.typography.bodyLarge
-            )
+                // Список ингредиентов
+                it.ingredients?.let {
+                    Text(
+                        text = "Ингредиенты:",
+                        style = MaterialTheme.typography.headlineSmall,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    it.split("\n").forEach { ingredient ->
+                        Text(
+                            text = "• $ingredient",
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(bottom = 4.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                // Описание приготовления
+                Text(
+                    text = "Приготовление:",
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                Text(
+                    text = it.instructions,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
         }
     }
 }
