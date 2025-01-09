@@ -8,7 +8,7 @@ interface RecipeApiService {
     @GET("recipes/complexSearch")
     suspend fun getRecipes(
         @Query("query") query: String,
-        @Query("number") number: Int = 2,
+        @Query("number") number: Int = 20,
         @Query("apiKey") apiKey: String = "9da28d784c144471928821cd1ac7e6eb",
         //@Query("instructionsRequired") instruction: Boolean = true,
         //@Query("fillIngredients") ingradients: Boolean = true

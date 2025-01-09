@@ -1,6 +1,7 @@
 package com.example.feature_recipe
 
 import android.net.Uri
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +33,11 @@ fun RecipeCard(recipe: Recipe, onRecipeClick: (Long) -> Unit) {
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .clickable { onRecipeClick(recipe.id) },
-        elevation = CardDefaults.cardElevation(4.dp)
+        elevation = CardDefaults.cardElevation(4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface, // Цвет фона карточки
+            contentColor = MaterialTheme.colorScheme.onSurface // Цвет для текста внутри карточки
+        )
     ) {
         Row(
             modifier = Modifier
@@ -45,7 +50,6 @@ fun RecipeCard(recipe: Recipe, onRecipeClick: (Long) -> Unit) {
                 Box(
                     modifier = Modifier
                         .size(64.dp) // Размер контейнера
-                        //.clip(CircleShape) // Делаем квадратное (по умолчанию  срез)
                         .clip(RoundedCornerShape(2.dp) )
 
                 ) {

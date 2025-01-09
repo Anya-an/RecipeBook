@@ -68,6 +68,7 @@ dependencies {
     implementation(project(":db"))
     implementation(project(":feature_book"))
     implementation(project(":feature_recipe"))
+    implementation(project(":ui_kit"))
     // implementation(project(":db"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

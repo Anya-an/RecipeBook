@@ -1,6 +1,7 @@
 package com.example.feature_book
 
 import android.net.Uri
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,7 +23,10 @@ import coil.compose.AsyncImage
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import com.example.feature_recipe.RecipeCard
 
 @Composable
@@ -34,13 +38,29 @@ fun BookRoute(nameScreen: String,
 
     //val recipesList = coroutineScope.launch {viewModel.loadRecipes()}
     //val recipes: () -> Unit = { coroutineScope.launch { viewModel.loadRecipes() }}
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.primary)
+            .padding(16.dp)
+    ) {
+        Text(
+            text = nameScreen,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            modifier = Modifier.align(Alignment.CenterStart)
+        )
+    }
     if (recipes.isEmpty()) {
         Text("Нет доступных рецептов")  // Показать сообщение при пустом списке
     } else {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(16.dp)
+            .padding(top = 80.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(recipes) { recipe ->

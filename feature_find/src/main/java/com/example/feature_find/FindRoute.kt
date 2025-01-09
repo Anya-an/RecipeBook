@@ -43,7 +43,7 @@ fun FindRoute(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF6200EE))
+            .background(MaterialTheme.colorScheme.primary)
             .padding(16.dp)
     ) {
         Text(
