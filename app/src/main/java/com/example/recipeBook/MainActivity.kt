@@ -60,9 +60,7 @@ fun AppScreen() {
             )
         },
         bottomBar = { BottomNavigationBar(navController, navBackStackEntry) }
-    ) /*{ innerPadding ->
-        NavigationHost(navController, Modifier.padding(innerPadding))
-    }*/
+    )
 }
 
 @Composable
@@ -116,24 +114,6 @@ fun BottomNavigationBar(navController: NavHostController,
                 }
             )
         }
-        /*val items = listOf(
-            Screen.Home,
-            Screen.Search,
-            Screen.Profile
-        )
-        items.forEach { screen ->
-            NavigationBarItem(
-                selected = navController.currentDestination?.route == screen.route,
-                onClick = { navController.navigate(screen.route) },
-                icon = {
-                    Icon(
-                        imageVector = screen.icon,
-                        contentDescription = screen.title
-                    )
-                },
-                label = { Text(screen.title) }
-            )
-        }*/
     }
 }
 
@@ -155,48 +135,6 @@ private val bottomNavigationItems = listOf(
     )
 )
 
-
-/*@Composable
-fun NavigationHost(navController: NavHostController, modifier: Modifier = Modifier) {
-    NavHost(
-        navController = navController,
-        startDestination = Screen.Home.route,
-        modifier = modifier
-    ) {
-        composable(Screen.Home.route) { HomeScreen() }
-        composable(Screen.Search.route) { SearchScreen() }
-        composable(Screen.Profile.route) { ProfileScreen() }
-    }
-}*/
-
-/*@Composable
-fun HomeScreen() {
-    CenteredText("Home Screen")
-}*/
-
-/*@Composable
-fun SearchScreen() {
-    CenteredText("Search Screen")
-}*/
-
-/*@Composable
-fun ProfileScreen() {
-    CenteredText("Profile Screen")
-}*/
-
-@Composable
-fun CenteredText(text: String) {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(16.dp)
-        )
-    }
-}
 
 sealed class Screen(val route: String, val title: String, val icon: androidx.compose.ui.graphics.vector.ImageVector) {
     object Home : Screen("home", "Home", Icons.Filled.Home)

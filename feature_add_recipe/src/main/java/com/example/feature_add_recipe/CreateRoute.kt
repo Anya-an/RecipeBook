@@ -17,8 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -27,7 +25,6 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.db.dto.Recipe
 import com.example.feature_recipe.RecipeViewModel
 import kotlinx.coroutines.launch
-import com.example.core.ImageHelper
 import com.example.core.ImageHelper.Companion.copyImageToInternalStorage
 import com.example.ui_kit.R
 import kotlinx.coroutines.CoroutineScope
@@ -41,7 +38,6 @@ fun CreateRoute(
     var title by remember { mutableStateOf(TextFieldValue("")) }
     var ingredients by remember { mutableStateOf(mutableListOf<Pair<String, String>>()) }
     var preparation by remember { mutableStateOf(TextFieldValue("")) }
-        //val scope = rememberCoroutineScope()
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     var newIngredientName by remember { mutableStateOf(TextFieldValue("")) }
     var newIngredientQuantity by remember { mutableStateOf(TextFieldValue("")) }
@@ -143,11 +139,11 @@ fun CreateRoute(
                 onClick = {
                     if (newIngredientName.text.isNotBlank() && newIngredientQuantity.text.isNotBlank()) {
                         ingredients.add(newIngredientName.text to newIngredientQuantity.text)
-                        newIngredientName = TextFieldValue("") // Очистка поля после добавления
-                        newIngredientQuantity = TextFieldValue("") // Очистка поля после добавления
+                        newIngredientName = TextFieldValue("")
+                        newIngredientQuantity = TextFieldValue("")
                     }
                 },
-                modifier = Modifier.align(Alignment.End)
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
                 Text(context.getString(R.string.create_add_ingredients))
             }
@@ -176,25 +172,16 @@ fun CreateRoute(
                     .padding(8.dp),
                 contentAlignment = Alignment.Center
             ) {
-                //if (photo != null) {
-               // selectedImageUri?.let { uri ->
                     Image(
-                        //painter = painterResource(id = photo!!),
                         painter = rememberAsyncImagePainter(uri),
                         contentDescription = context.getString(R.string.crate_photo),
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
                     )
-                //} //else {
-                    ?:
-                    Text(
-                        text = "Нет изображения",
-                        textAlign = TextAlign.Center,
-                        color = Color.Gray
-                    )
                 }
             }
-            Button(onClick = { launcher.launch("image/*") },) {
+            Button(onClick = { launcher.launch("image/*") },
+                modifier = Modifier.align(Alignment.CenterHorizontally)) {
                 Text(context.getString(R.string.create_add_photo))
             }
         }

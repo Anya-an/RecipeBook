@@ -43,22 +43,10 @@ class RecipeViewModel @Inject constructor(
         }
     }
 
-  /*  private val _recipe = MutableStateFlow<Recipe?>(null)
-    val recipe: StateFlow<Recipe?> get() = _recipe
-
-    fun loadRecipeById(recipeId: Long) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                _recipe.value = repository.getRecipeById(recipeId)
-            }
-        }
-    }*/
 
     private val _recipe = MutableStateFlow<Recipe?>(null)
     val recipe: StateFlow<Recipe?> = _recipe
 
-        // private val _recipeInfo = MutableStateFlow<Recipe?>(null)
-    //val recipeInfo: StateFlow<Recipe?> = _recipeInfo
 
     fun loadRecipeById(recipeId: Long) {
         viewModelScope.launch {
@@ -94,8 +82,6 @@ class RecipeViewModel @Inject constructor(
     private val _networkRecipesFlow = MutableStateFlow<List<Recipe>>(emptyList())
     val networkRecipesFlow: StateFlow<List<Recipe>> get() = _networkRecipesFlow
 
-   // private val _recipeInfo = MutableStateFlow<Recipe?>(null)
-    //val recipeInfo: StateFlow<Recipe?> get() = _recipeInfo
 
     // Загрузка из сети
     fun fetchRecipesFromNetwork(query: String) {
@@ -116,25 +102,6 @@ class RecipeViewModel @Inject constructor(
             }
         }
     }
-
-   /* fun getRecipeInformation(id: Int) {
-        viewModelScope.launch {
-            try {
-                val response = apiService.getRecipeInformation(id)
-                val recipe = Recipe(
-                    id = id.toLong(),
-                    name = response.title,
-                    ingredients = response.ingredients.joinToString(", ") { it.name },
-                    instructions = response.instructions ?: "Нет инструкций",
-                    imageUrl = response.image
-                )
-
-                _recipeInfo.value = recipe
-            } catch (e: Exception) {
-                // Handle error
-            }
-        }
-    }*/
 
 }
 
