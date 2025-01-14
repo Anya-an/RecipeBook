@@ -43,6 +43,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation (libs.kotlin.test)
 
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -51,4 +52,13 @@ dependencies {
     // Hilt для внедрения зависимостей
     implementation(libs.hiltAndroid)
     kapt(libs.hiltCompiler)
+
+    // Mockito для создания моков
+    testImplementation ("org.mockito:mockito-core:5.13.0")
+
+    // Для Kotlin и Mockito
+    testImplementation ("org.mockito.kotlin:mockito-kotlin:5.4.0")
+
+    // Для JUnit
+    testImplementation ("junit:junit:4.13.2")
 }

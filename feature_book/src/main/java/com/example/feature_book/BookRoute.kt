@@ -54,7 +54,7 @@ fun BookRoute(nameScreen: String,
         )
     }
     if (recipes.isEmpty()) {
-        Text("Нет доступных рецептов")  // Показать сообщение при пустом списке
+  // Показать сообщение при пустом списке
     } else {
         LazyColumn(
             modifier = Modifier

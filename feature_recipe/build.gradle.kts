@@ -89,4 +89,10 @@ dependencies {
     testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.8.2")
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
     testImplementation ("org.mockito.kotlin:mockito-kotlin:4.0.0")
+
+    // Зависимости для тестов Hilt
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.48")
+    kaptAndroidTest ("com.google.dagger:hilt-android-compiler:2.48")
+
+    androidTestImplementation ("org.mockito:mockito-android:5.5.0")
 }

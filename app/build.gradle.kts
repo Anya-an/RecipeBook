@@ -79,42 +79,34 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // Hilt dependencies
-    /*implementation("com.google.dagger:hilt-android:2.48") // Hilt runtime
-    kapt("com.google.dagger:hilt-android-compiler:2.48") // Hilt compiler
-
-    // Hilt ViewModel integration
-    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")*/
-    // Hilt dependencies
     implementation(libs.hiltAndroid)
     kapt(libs.hiltCompiler)
-
-    // Hilt ViewModel
-    //implementation(libs.hiltLifecycleViewmodel)
-   // kapt(libs.hiltCompilerLifecycle)
 
     // Room dependencies (если нужно использовать напрямую)
     implementation(libs.roomRuntime)
     implementation(libs.roomKtx)
     kapt(libs.roomCompiler)
 
-    // Core Hilt
-    //implementation("com.google.dagger:hilt-android:2.44")
-    //kapt("com.google.dagger:hilt-compiler:2.44")
-
-    // Если используете ViewModel
-        //implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
-    //kapt("androidx.hilt:hilt-compiler:1.0.0")
-
     // Для работы с Compose
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
-    // Room и Hilt
-    //implementation("androidx.room:room-runtime:2.5.0")
-   // kapt("androidx.room:room-compiler:2.5.0")
-    //implementation("androidx.room:room-ktx:2.5.0")
 
     // Lifecycle (ViewModel, LiveData)
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.1")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.1")
+    testImplementation("org.mockito:mockito-core:5.5.0")
+    androidTestImplementation("org.mockito:mockito-android:5.5.0")
+
+    // Для работы с Coroutine в тестах
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    androidTestImplementation("androidx.navigation:navigation-testing:2.7.4")
+
+    // Зависимости для тестов Hilt
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.48")
+    kaptAndroidTest ("com.google.dagger:hilt-android-compiler:2.48")
+
+
 }
