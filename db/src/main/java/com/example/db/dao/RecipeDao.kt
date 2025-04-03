@@ -29,4 +29,7 @@ interface RecipeDao {
     // Удаление рецепта
     @Query("DELETE FROM recipe WHERE id = :id")
     fun delete(id: Long)
+
+    @Delete
+    fun deleteRecipe(recipe: Recipe)
 }

@@ -103,5 +103,13 @@ class RecipeViewModel @Inject constructor(
         }
     }
 
+    fun deleteRecipe(recipe: Recipe) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.deleteRecipe(recipe) // Удаление через репозиторий
+            }
+        }
+    }
+
 }
 

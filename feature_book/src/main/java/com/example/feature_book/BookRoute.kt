@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,26 +23,34 @@ import coil.compose.AsyncImage
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.feature_recipe.RecipeCard
+import androidx.compose.material.SwipeToDismiss
+import androidx.compose.material.DismissDirection
+import androidx.compose.material.rememberDismissState
+import androidx.compose.material.DismissValue
+import androidx.compose.runtime.LaunchedEffect
 
+
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BookRoute(nameScreen: String,
-              coroutineScope: CoroutineScope = rememberCoroutineScope(),
-              navController: NavController,// =  rememberNavController(),
-              viewModel: com.example.feature_recipe.RecipeViewModel = hiltViewModel()) {
+fun BookRoute(
+    nameScreen: String,
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    navController: NavController,
+    viewModel: com.example.feature_recipe.RecipeViewModel = hiltViewModel()
+) {
     val recipes by viewModel.recipesFlow.collectAsState()
-
-    //val recipesList = coroutineScope.launch {viewModel.loadRecipes()}
-    //val recipes: () -> Unit = { coroutineScope.launch { viewModel.loadRecipes() }}
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primary)
+            .background(MaterialTheme.colors.primary)
             .padding(16.dp)
     ) {
         Text(
@@ -53,22 +61,49 @@ fun BookRoute(nameScreen: String,
             modifier = Modifier.align(Alignment.CenterStart)
         )
     }
+
     if (recipes.isEmpty()) {
-  // Показать сообщение при пустом списке
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = "No recipes available", fontSize = 18.sp, color = Color.Gray)
+        }
     } else {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-            .padding(top = 80.dp),
+                .padding(top = 80.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(recipes) { recipe ->
-                RecipeCard(recipe,
-                    onRecipeClick = { recipeId ->
-                        navController.navigate("recipeDetail/$recipeId")})
+            items(recipes, key = { it.id }) { recipe ->
+                val dismissState = rememberDismissState()
+
+                if (dismissState.isDismissed(DismissDirection.EndToStart)) {
+                    LaunchedEffect(recipe) {
+                        viewModel.deleteRecipe(recipe) // Удаление через ViewModel
+                    }
+                }
+
+                SwipeToDismiss(
+                    state = dismissState,
+                    directions = setOf(DismissDirection.EndToStart),
+                    background = {
+                        
+                    },
+                    dismissContent = {
+                        RecipeCard(
+                            recipe = recipe,
+                            onRecipeClick = { recipeId ->
+                                navController.navigate("recipeDetail/$recipeId")
+                            }
+                        )
+                    }
+                )
             }
         }
     }
 }
+
 
