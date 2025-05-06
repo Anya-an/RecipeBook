@@ -45,8 +45,23 @@ class RecipeViewModel @Inject constructor(
 
 
     private val _recipe = MutableStateFlow<Recipe?>(null)
-    val recipe: StateFlow<Recipe?> = _recipe
+    val recipe: StateFlow<Recipe?> get() = _recipe
 
+    // Сетевые данные (например, для поиска)
+    private val _networkRecipesFlow = MutableStateFlow<List<Recipe>>(emptyList())
+    val networkRecipesFlow: StateFlow<List<Recipe>> get() = _networkRecipesFlow
+
+    private val _localRecipesFlow = MutableStateFlow<List<Recipe>>(emptyList())
+    val localRecipesFlow: StateFlow<List<Recipe>> get() = _localRecipesFlow
+
+    fun findRecipeByNameLocal(recipeName: String){
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+            val recipe = repository.getRecipeByName(recipeName)
+                _localRecipesFlow.value = recipe?.let { listOf(it) } ?: emptyList()
+            }
+        }
+    }
 
     fun loadRecipeById(recipeId: Long) {
         viewModelScope.launch {
@@ -78,9 +93,7 @@ class RecipeViewModel @Inject constructor(
         }
     }
 
-    // Сетевые данные (например, для поиска)
-    private val _networkRecipesFlow = MutableStateFlow<List<Recipe>>(emptyList())
-    val networkRecipesFlow: StateFlow<List<Recipe>> get() = _networkRecipesFlow
+
 
 
     // Загрузка из сети

@@ -18,6 +18,10 @@ interface RecipeDao {
     @Query("SELECT * FROM recipe WHERE id = :id LIMIT 1")
     fun getRecipeById(id: Long): Recipe?
 
+    // Получение рецепта по имени
+    @Query("SELECT * FROM recipe WHERE name = :name LIMIT 1")
+    fun getRecipeByName(name: String): Recipe?
+
     // Вставка нового рецепта
     @Insert
     fun insert(recipe: Recipe)

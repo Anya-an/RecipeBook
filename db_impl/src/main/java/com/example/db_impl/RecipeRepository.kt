@@ -20,6 +20,7 @@ class RecipeRepository @Inject constructor(
     suspend fun getAllRecipes() = recipeDao.getAllRecipes()
 
     suspend fun getRecipeById(id: Long) = recipeDao.getRecipeById(id)
+    suspend fun getRecipeByName(name: String) = recipeDao.getRecipeByName(name)
 
     suspend fun update(recipe: Recipe) = recipeDao.update(recipe)
 

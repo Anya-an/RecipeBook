@@ -36,7 +36,8 @@ fun FindRoute(
     var searchQuery by remember { mutableStateOf("") }
 
     // Подписка на результаты поиска из ViewModel
-    val searchResults by viewModel.networkRecipesFlow.collectAsState()
+    //val searchResults by viewModel.networkRecipesFlow.collectAsState()
+    val searchResults by viewModel.localRecipesFlow.collectAsState()
 
 
     val focusManager = LocalFocusManager.current
@@ -73,7 +74,7 @@ fun FindRoute(
                     onClick = {
                         focusManager.clearFocus()
                         // Логика поиска
-                        viewModel.fetchRecipesFromNetwork(searchQuery)
+                        viewModel.findRecipeByNameLocal(searchQuery)
                     }
                 ) {
                     Icon(
