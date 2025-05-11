@@ -36,4 +36,6 @@ interface RecipeDao {
 
     @Delete
     fun deleteRecipe(recipe: Recipe)
+    @Update
+    fun updateRecipe(recipe: Recipe)
 }

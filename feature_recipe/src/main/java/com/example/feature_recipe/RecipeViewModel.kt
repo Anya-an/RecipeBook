@@ -124,5 +124,13 @@ class RecipeViewModel @Inject constructor(
         }
     }
 
+    fun updateRecipe(recipe: Recipe) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.updateRecipe(recipe)
+            }
+        }
+    }
+
 }
 

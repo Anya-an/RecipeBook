@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.db.dto.Recipe
 
@@ -43,7 +45,8 @@ import com.example.db.dto.Recipe
 fun RecipeDetailsScreen(
     //recipe: Recipe, // Ваш объект с данными рецепта
     recipeId: Long,
-    viewModel: RecipeViewModel = hiltViewModel()
+    viewModel: RecipeViewModel = hiltViewModel(),
+    navController: NavController,
    // modifier: Modifier = Modifier
 ) {
 
@@ -86,6 +89,14 @@ fun RecipeDetailsScreen(
                             )) }) {
                                 Icon(
                                     imageVector = Icons.Default.Add,
+                                    contentDescription = "Сохранить рецепт"
+                                )
+                            }
+                        }
+                        else {
+                            IconButton(onClick = { navController.navigate("recipeEdit/${it.id}") }) {
+                                Icon(
+                                    imageVector = Icons.Default.Edit,
                                     contentDescription = "Сохранить рецепт"
                                 )
                             }

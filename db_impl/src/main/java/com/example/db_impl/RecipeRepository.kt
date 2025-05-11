@@ -26,4 +26,7 @@ class RecipeRepository @Inject constructor(
 
     suspend fun delete(id: Long) = recipeDao.delete(id)
     suspend fun deleteRecipe(recipe: Recipe) = recipeDao.deleteRecipe(recipe)
+
+    suspend fun updateRecipe(recipe: Recipe) = recipeDao.updateRecipe(recipe)
+
 }

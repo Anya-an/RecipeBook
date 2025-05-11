@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.core.navigation.MainScreenContent
 import com.example.feature_add_recipe.CreateRoute
+import com.example.feature_add_recipe.EditRoute
 import com.example.feature_book.BookRoute
 import com.example.feature_find.FindRoute
 import com.example.feature_recipe.RecipeDetailsScreen
@@ -47,7 +48,17 @@ fun MainContentNavGraph(
             arguments = listOf(navArgument("recipeId") { type = NavType.LongType })
         ) { backStackEntry ->
             val recipeId = backStackEntry.arguments?.getLong("recipeId") ?: -1
-            RecipeDetailsScreen(recipeId = recipeId)
+            RecipeDetailsScreen(recipeId = recipeId,navController = navController)
+        }
+
+        composable(
+            route = "recipeEdit/{recipeId}",
+            arguments = listOf(navArgument("recipeId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val recipeId = backStackEntry.arguments?.getLong("recipeId") ?: -1
+            EditRoute(
+                nameScreen = MainScreenContent.Create.nameScreen,
+                recipeId = recipeId)
         }
     }
 }
